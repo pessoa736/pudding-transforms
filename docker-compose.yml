@@ -1,0 +1,15 @@
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile	
+    container_name: transforms
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    env_file:
+      - .env
+    
