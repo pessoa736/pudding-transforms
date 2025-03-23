@@ -164,7 +164,7 @@ end
 
 
 
-if debugmode and matrixtest then
+if _ENV.MATRIX_TEST	 then
   -- Exemplo de uso
   local A = Matrix.new(2, 3)
   A.data = {
@@ -177,7 +177,7 @@ if debugmode and matrixtest then
       {6, 5, 4},
       {3, 2, 1}
   }
-  
+
   local C = A + B         -- Soma de matrizes
   local D = A - B         -- Subtração de matrizes
   local E = 2 * A         -- Multiplicação escalar
