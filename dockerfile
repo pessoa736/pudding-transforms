@@ -1,0 +1,18 @@
+FROM nickblah/lua:5.4.7-luarocks-ubuntu
+
+
+WORKDIR /app
+
+COPY . .
+
+RUN apt-get update && apt-get install -y
+RUN apt-get install -y lua5.4 luarocks
+RUN apt-get install -y gcc build-essential 
+RUN luarocks install luasocket
+
+RUN chmod 644 .env
+
+USER $user
+
+
+
