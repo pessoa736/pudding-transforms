@@ -1,21 +1,31 @@
-local libs= {
+
+-- pacotes a serem carregados / packages to be loaded
+local pacotes={
   "Matriz"
 }
-for _, lib in ipairs(libs) do
-  local i = false
-  for k in pairs(package.loaded) do
-    if k == lib then
-      i=true
-    end
+
+
+-- carregamento dos pacotes / loading packages
+for _, pacote in ipairs(pacotes) do
+  local pacote_carregado = false
+
+  for pacote_carregado in pairs(_ENV.package.loaded) do
+    if pacote == pacote_carregado then pacote_carregado = true end
   end
-  if not i then
-    require(lib)
-    print(lib.." is loaded")
+
+  if not pacote_carregado then 
+    require(pacote) 
+    if DEBUGMODE then print(pacote.." is loaded") end
   end
 end
 
 
-local char_esp={
+
+
+
+-- tokenizer script
+
+local special_characters={
   ["a"]="áâãàäåæāăąª",
   ["c"]="çćĉčč̣",
   ["d"]="ðďđḍ",
@@ -38,55 +48,74 @@ local char_esp={
   ["z"]="źżžẓ̌"
 }
 
-
-local function checkchar(letter)
-  local result = letter
-  for k, v in pairs(char_esp) do
+--[[ 
+    funcao para trocar o caractere especial pelo seu caractere normalizado  
+    function to replace the special character with its equivalent character
+]]
+local function troca_caractere(letra_especial)
+  local resultado = letra_especial
+  
+  for letra_normalizada, v in pairs(special_characters) do
     for _, c in utf8.codes(v) do
-      if utf8.char(c) == letter then
-        result = k 
+
+      if utf8.char(c) == letra_especial then
+        resultado = letra_normalizada 
       end
+
     end
   end
-  return result
+  
+  return resultado
 end
 
-local function normalaize_text(str)
-  local newstring=""
-  for n, c in utf8.codes(str) do
-    local c = utf8.char(c)
-    newstring = newstring .. checkchar(c)
+
+
+-- funcao para normalizar o texto / function to normalize the text
+local function normalizador_de_texto(texto)
+  local novo_texto=""
+  
+  for n, c in utf8.codes(texto) do
+    local caractere = utf8.char(c)
+    novo_texto = novo_texto .. troca_caractere(caractere)
   end
-  return newstring
+  
+  return novo_texto
 end
 
-print(normalaize_text("isso é um test de normalização de texto"))
 
-tokenizer = function(str)
-  local normalized = normalaize_text(str)
-  local removespace = normalized:gsub(" ", ",")
+
+-- funcao para transformar o texto em tabela / function to transform the text into a table
+function transformador_de_texto_em_tabela(texto)
+  local texto_normalizado = normalizador_de_texto(texto)
+  local texto_sem_espacos = texto_normalizado:gsub(" ", ",")
+  
   local i = 0
-  local words = removespace:gsub("%w+", 
-    function(s)
-      local result =  '['..i..']="'..s..'"'
+  local palavras = texto_sem_espacos:gsub("%w+", 
+    function(palavra)
+      local resultado = '['..i..']="'..palavra..'"'
       i=i+1
-      return result
+      return resultado
     end
   )
-    local tablefunction, err=load("return {"..words.."}")
-    if tablefunction then
-      local ok, table_ = pcall(tablefunction)
-      return setmetatable(
-        table_,
-        {__tostring = function(s) return "{"..words.."}" end}
-      )
-    else
-      print("erro:" .. err)
-    end
-  --return tablefunction
+
+  local funcao_que_cria_tabela, erro = load("return {"..palavras.."}")
+
+  if funcao_que_cria_tabela then
+    local ok, tabela_de_palavras = pcall(funcao_que_cria_tabela)
+    
+    return setmetatable(
+      tabela_de_palavras,
+      {__tostring = function(s) return "{"..palavras.."}" end}
+    )
+
+  else
+    print("erro:" .. erro)
+  end
+  
 end
-debugtokenizer=true
-if debugtokenizer then
-  local tokens = tokenizer("isso é um test de traformação de uma string em tabela")
+
+if _ENV.DEBUGMODE and _ENV.TOKENIZERTEST then
+  print(normalizador_de_texto("isso é um test de normalização de texto"))
+  local tokens = transformador_de_texto_em_tabela("isso é um test de traformação de uma string em tabela")
   print(tokens)
 end
