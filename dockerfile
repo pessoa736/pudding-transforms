@@ -1,18 +1,16 @@
-FROM nickblah/lua:5.4.7-luarocks-debian
+FROM nickblah/lua:5.4.7-luarocks-ubuntu
 
-ARG user=Davi
-ARG uid=1000
 
 WORKDIR /app
 
 COPY . .
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-
-
 RUN apt-get update && apt-get install -y
+RUN apt-get install -y lua5.4 luarocks
+RUN apt-get install -y gcc build-essential 
+RUN luarocks install luasocket
 
-RUN chown -R $user:$user /app
+RUN chmod 644 .env
 
 USER $user
 

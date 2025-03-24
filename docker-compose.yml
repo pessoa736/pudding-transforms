@@ -1,10 +1,7 @@
 
 services:
   app:
-    build: 
-      context: .
-      dockerfile: Dockerfile	
-    container_name: transforms
+    build: .
     ports:
       - "8080:8080"
     volumes:
@@ -12,4 +9,4 @@ services:
     working_dir: /app
     env_file:
       - .env
-    
+    command: ["lua", "Main.lua"]
