@@ -1,10 +1,3 @@
-<<<<<<< Updated upstream
-
-
-local libs= {
-  "Matriz",
-  "Tokenizer"	
-=======
 DEBUGMODE = os.getenv("DEBUGMODE") 	                == "true";
 TOKENIZERTEST = os.getenv("TOKENIZERTEST")          == "true";  
 MATRIXTEST = os.getenv("MATRIXTEST")                == "true";
@@ -22,7 +15,6 @@ pacotes= {
   "Tokenizer",
   "Matriz",
   "neural_network"
->>>>>>> Stashed changes
 }
 
 -- carregamento dos pacotes / loading packages
@@ -32,16 +24,10 @@ for _, pacote in ipairs(pacotes) do
   for pacote_carregado in pairs(package.loaded) do
     if pacote == pacote_carregado then pacote_carregado = true end
   end
-<<<<<<< Updated upstream
-  if not i then
-    require(lib)
-    if _ENV.DEBUGMODE then print(lib.." is loaded") end
-=======
 
   if not pacote_carregado then 
     require(pacote) 
     if DEBUGMODE then print(pacote.." is loaded") end
->>>>>>> Stashed changes
   end
 end
 

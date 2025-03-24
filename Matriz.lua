@@ -162,15 +162,8 @@ function Matrix.transpose(self)
     return result
 end
 
-<<<<<<< Updated upstream
-
-
-if _ENV.MATRIX_TEST	 then
-  -- Exemplo de uso
-=======
 if DEBUGMODE and MATRIXTEST then
 --   -- Exemplo de uso
->>>>>>> Stashed changes
   local A = Matrix.new(2, 3)
   A.data = {
       {1, 2, 3},
