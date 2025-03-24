@@ -125,6 +125,31 @@ function Matrix.__mul(a, b)
     end
 end
 
+
+function Matrix.__idiv(a, b)
+    if type(a) == "number" then
+        -- Divisão escalar: número // matriz
+        local result = Matrix.new(b.nrows, b.ncols)
+        for i = 1, b.nrows do
+            for j = 1, b.ncols do
+                result.data[i][j] = a // b.data[i][j]
+            end
+        end
+        return result
+    elseif type(b) == "number" then
+        -- Divisão escalar: matriz // número
+        local result = Matrix.new(a.nrows, a.ncols)
+        for i = 1, a.nrows do
+            for j = 1, a.ncols do
+                result.data[i][j] = a.data[i][j] // b
+            end
+        end
+        return result
+    
+    end
+end
+
+
 -- Operador unário para negação (-matriz)
 function Matrix.__unm(m)
     local result = Matrix.new(m.nrows, m.ncols)

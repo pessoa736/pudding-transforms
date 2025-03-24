@@ -14,7 +14,8 @@ print("\n\n")
 pacotes= {
   "Tokenizer",
   "Matriz",
-  "neural_network"
+  "neural_network",
+  "training"
 }
 
 -- carregamento dos pacotes / loading packages

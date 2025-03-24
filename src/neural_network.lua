@@ -2,13 +2,14 @@
 
 
 -- funcao de ativacao / activation function
-function sigm(n)
-    local max = math.max
-    local n = max(0, n)
-    return n/(n+1)
+local function sigm(n)
+    return 1/(1+1/math.exp(n))
 end
 
-  
+local function derivate(f, n)
+    return (f(n+0.001)-f(n))/0.001
+end
+
 -- funcao para criar a rede neural / function to create the neural network
 function criar_rede_neural(layers) 
     local nn = {
@@ -41,31 +42,48 @@ function criar_rede_neural(layers)
                                 local item = m:get(i, j)
                                 local result = sigm(item)
 
-                                if DEBUGMODE and NEURALNETWORKTEST then print("valor recebido: "..item, "valor ativado: "..result) end
+                                if DEBUGMODE then print("valor recebido: "..item, "valor ativado: "..result) end
                                 
                                 return result
                             end
                         )
                     end
                     
-                    if DEBUGMODE and NEURALNETWORKTEST then print("\nvisualizando as camadas e pesos: \n"..tostring(s)) end
+                    if DEBUGMODE then print("\nvisualizando as camadas e pesos: \n"..tostring(s)) end
+                    if #s.sizelayers == l then
+                        return s.layers[l]
+                    end
                 end,
-
+                backpropagation = function(s, learning_rate)
+                    for l = #s.weight, 2, -1 do
+                        s.weight[l] = s.weight[l]:modify(
+                            function(i, j, m)
+                                local item = m:get(i, j)
+                                local delta = derivate(sigm, item)
+                                local result = item - delta * learning_rate
+                                if DEBUGMODE then print("item: "..item, "delta: "..delta, "result: "..result) end
+                                
+                                return result
+                            end
+                        )
+                
+                    end
+                end,
                 inputsset = function(s, inputs)
-                    if DEBUGMODE and NEURALNETWORKTEST then print("") end
+                    if DEBUGMODE then print("") end
                     if DEBUGMODE then print("inputs setados") end
 
                     s.layers[1]=s.layers[1]:modify(
                         function(i, j, m)
                             local result = inputs[i][j]
                             
-                            if DEBUGMODE and NEURALNETWORKTEST then print("input: "..j.." = "..result) end
+                            if DEBUGMODE  then print("input: "..j.." = "..result) end
                             
                             return result
                         end
                     )
 
-                    if DEBUGMODE and NEURALNETWORKTEST then print("") end
+                    if DEBUGMODE then print("") end
                 
                 end
 
@@ -88,16 +106,20 @@ function criar_rede_neural(layers)
         }
     )
 end
+
+
+
+
   
-if DEBUGMODE and NEURALNETWORKTEST then
+if  NEURALNETWORKTEST then
     local i=0
     print "\n\n---- testing neural network ----"
-    nn = criar_rede_neural({2, 4, 4, 3})
+    local nn = criar_rede_neural({2, 4, 4, 3})
     nn:inputsset({{2,3}})
     
-    
-    while i<1 do
+    while i<2 do
         nn:think()
+        nn:backpropagation(0.0001)
         i=i+1
     end
 end

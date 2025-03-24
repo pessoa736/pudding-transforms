@@ -1,29 +1,5 @@
 
--- pacotes a serem carregados / packages to be loaded
-local pacotes={
-  "Matriz"
-}
 
-
--- carregamento dos pacotes / loading packages
-for _, pacote in ipairs(pacotes) do
-  local pacote_carregado = false
-
-  for pacote_carregado in pairs(_ENV.package.loaded) do
-    if pacote == pacote_carregado then pacote_carregado = true end
-  end
-
-  if not pacote_carregado then 
-    require(pacote) 
-    if DEBUGMODE then print(pacote.." is loaded") end
-  end
-end
-
-
-
-
-
--- tokenizer script
 
 local special_characters={
   ["a"]="áâãàäåæāăąª",
