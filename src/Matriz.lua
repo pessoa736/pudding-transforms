@@ -132,7 +132,7 @@ function Matrix.__idiv(a, b)
         local result = Matrix.new(b.nrows, b.ncols)
         for i = 1, b.nrows do
             for j = 1, b.ncols do
-                result.data[i][j] = a // b.data[i][j]
+                result.data[i][j] = math.floor(a / b.data[i][j])
             end
         end
         return result
@@ -141,7 +141,7 @@ function Matrix.__idiv(a, b)
         local result = Matrix.new(a.nrows, a.ncols)
         for i = 1, a.nrows do
             for j = 1, a.ncols do
-                result.data[i][j] = a.data[i][j] // b
+                result.data[i][j] = math.floor(a.data[i][j] / b)
             end
         end
         return result

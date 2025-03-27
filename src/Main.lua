@@ -1,7 +1,4 @@
-DEBUGMODE = os.getenv("DEBUGMODE") 	                == "true";
-TOKENIZERTEST = os.getenv("TOKENIZERTEST")          == "true";  
-MATRIXTEST = os.getenv("MATRIXTEST")                == "true";
-NEURALNETWORKTEST = os.getenv("NEURALNETWORKTEST")  == "true";
+
 
 print("\nsettings:")
 print("\tdebug mode: " .. (DEBUGMODE and "true" or "false"))
@@ -12,10 +9,12 @@ print("\n\n")
 
 -- pacotes a serem carregados / packages to be loaded
 pacotes= {
+  "env",
   "Tokenizer",
   "Matriz",
   "neural_network",
-  "training"
+  "training",
+  "lapis"
 }
 
 -- carregamento dos pacotes / loading packages
@@ -31,5 +30,8 @@ for _, pacote in ipairs(pacotes) do
     if DEBUGMODE then print(pacote.." is loaded") end
   end
 end
+
+os.execute()
+
 
 

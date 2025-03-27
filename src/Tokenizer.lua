@@ -90,7 +90,7 @@ function transformador_de_texto_em_tabela(texto)
   
 end
 
-if _ENV.DEBUGMODE and _ENV.TOKENIZERTEST then
+if DEBUGMODE and TOKENIZERTEST then
   print(normalizador_de_texto("isso é um test de normalização de texto"))
   local tokens = transformador_de_texto_em_tabela("isso é um test de traformação de uma string em tabela")
   print(tokens)
