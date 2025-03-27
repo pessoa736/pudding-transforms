@@ -1,0 +1,6 @@
+DEBUGMODE=false
+
+-- testes
+MATRIXTEST=false
+TOKENIZERTEST=false
+NEURALNETWORKTEST=false
