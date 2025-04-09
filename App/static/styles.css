@@ -1,4 +1,41 @@
 
+:root {
+  --c1: #77ccff;
+  --c2: #33aadd;
+  --c3: #003388;
+}
+
+
 * {
-  background-color: black; 
+  margin: 0;
+  padding: 0;
+  font-family: Comic Sans MS;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--c2);
+}
+
+header{
+  background-color: var(--c1);
+  height: 250px;
+  position: absolute;
+}
+
+footer{
+  background-color: var(--c1);
+  margin-top: 5%;
+  
+}
+
+.nn_space {
+  padding: 5%;
+  background-color: var(--c3);
+  min-width: min-content;
+}
+
+
+.container {
+  height: 1200px;
 }

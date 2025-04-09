@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="static/styles.css">
   </head>
   <body>
-    <h1>test</h1>
+    <% render("static/Components/Header")%>
+    
+    <main class="container">
+    
+    </main>
+    
+    <% render("static/Components/Footer") %>
   </body>
 </html>
