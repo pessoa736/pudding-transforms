@@ -1,0 +1,5 @@
+FROM openresty/openresty:1.21.4.1-0-jammy
+
+EXPOSE 80
+
+CMD ["openresty", "-g", "daemon off;"]

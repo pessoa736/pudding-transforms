@@ -1,0 +1,8 @@
+FROM ubuntu:jammy
+
+RUN apt-get update
+RUN apt-get install lua5.1 lua5.2 lua5.3 lua5.4 make gcc cpp build-essential libssl-dev -y
+RUN apt-get install luarocks -y
+
+
+RUN luarocks install lapis
