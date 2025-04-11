@@ -1,5 +1,5 @@
 
-**Nota: Este projeto está atualmente em estado inicial desenvolvimento e ainda não é estável. funcionalidades podem mudar.**
+**Nota: Este projeto está atualmente em estado inicial de desenvolvimento e ainda não é estável. funcionalidades podem mudar.**
 
 # Pudding-transforms
 
