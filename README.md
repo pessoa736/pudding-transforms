@@ -3,7 +3,7 @@
 
 # Pudding-transforms
 
-Pudding-transforms é uma biblioteca baseada em Lua para criação e treinamento de modelos de inteligência artificial. O objetivo é oferecer uma plataforma acessível e fácil de usar para desenvolvimento de IA. Atualmente em desenvolvimento, a biblioteca inclui funcionalidades como tokenização e uma interface de visualização para ajudar os usuários a entenderem melhor seus modelos.
+Pudding-transforms é uma biblioteca baseada em Lua para criação e treinamento de modelos de inteligência artificial. o meu objetivo com esse projeto é fazer a minha propria biblioteca de criação e trainamento de inteligencia artificial. Atualmente em desenvolvimento, a biblioteca inclui funcionalidades como tokenização e uma interface de visualização para ajudar os usuários a entenderem melhor seus modelos.
 
 
 ## Contribuição
