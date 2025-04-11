@@ -14,10 +14,6 @@ Contribuições para o Pudding-transforms são bem-vindas! Se você deseja contr
 
 Licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
-## Contato
-
-Dúvidas ou problemas? Abra uma issue no GitHub ou entre em contato conosco pelo e-mail [email@example.com].
-
 ## Status de Desenvolvimento
 
 O Pudding-transforms está em fase inicial de desenvolvimento. A funcionalidade principal de criação e treinamento de modelos está sendo implementada. O sistema de tokenização e a interface de visualização também estão em desenvolvimento e serão integrados em breve.
