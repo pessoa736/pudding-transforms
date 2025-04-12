@@ -1,0 +1,21 @@
+FROM openresty/openresty:1.21.4.1-0-jammy
+
+# Instalar dependências e Lapis com LuaJIT do OpenResty
+RUN apt-get update 
+RUN apt-get install lua5.1 lua5.2 lua5.3 lua5.4 make gcc cpp build-essential libssl-dev -y
+RUN apt-get install luarocks -y
+RUN rm -rf /var/lib/apt/lists/*
+
+# Especificar o LuaJIT do OpenResty durante a instalação do Lapis
+RUN luarocks --lua-dir=/usr/local/openresty/luajit install lapis
+
+# Garantir que o binário do OpenResty está no PATH
+ENV PATH="/usr/local/openresty/bin:${PATH}"
+
+# Copiar a aplicação e definir diretório de trabalho
+COPY . /App
+WORKDIR /App
+
+# Definir comando padrão
+CMD ["lapis", "server"]
+

@@ -10,3 +10,7 @@
 2025/03/29 16:27:57 [alert] 27481#27481: lua_code_cache is off; this will hurt performance in /root/projects/2/App/nginx.conf.compiled:20
 2025/04/09 07:57:06 [alert] 23906#23906: lua_code_cache is off; this will hurt performance in /root/projects/2/App/nginx.conf.compiled:20
 2025/04/09 08:26:13 [alert] 31504#31504: lua_code_cache is off; this will hurt performance in /root/projects/2/App/nginx.conf.compiled:20
+2025/04/10 23:44:33 [alert] 21#21: lua_code_cache is off; this will hurt performance in /App/nginx.conf.compiled:20
+2025/04/10 23:46:44 [alert] 21#21: lua_code_cache is off; this will hurt performance in /App/nginx.conf.compiled:20
+2025/04/11 00:32:44 [alert] 21#21: lua_code_cache is off; this will hurt performance in /App/nginx.conf.compiled:20
+2025/04/11 01:27:01 [alert] 21#21: lua_code_cache is off; this will hurt performance in /App/nginx.conf.compiled:20

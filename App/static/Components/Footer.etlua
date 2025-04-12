@@ -1,3 +1,9 @@
-<footer>
-
-</footer>
+<!DOCTYPE html>
+<html lang="en">
+<head><%- helpers.get_style() %></head>
+<body>
+    <footer>
+        <h1> test footer</h1>
+    </footer>    
+</body>
+</html>

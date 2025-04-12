@@ -9,13 +9,9 @@
     <% render("static/Components/Header") %>
     
     <main class="container">
-      <section class="home-card">
-        <h1>Bem-vindo ao Pudding-transforms Hub</h1>
-        <p>Escolha uma das seções para navegar:</p>
-        <ul class="nav-list">
-          <li><a href="/visualizador-de-modelo">visualizador de modelo</a></li>
-        </ul>
-      </section>
+      <div class="nn_space">
+        <% for i = 0, 2 %>
+      </div>
     </main>
     
     <% render("static/Components/Footer") %>

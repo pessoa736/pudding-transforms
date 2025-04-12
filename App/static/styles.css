@@ -10,7 +10,6 @@
   margin: 0;
   padding: 0;
   font-family: Comic Sans MS;
-  box-sizing: border-box;
 }
 
 body {
@@ -19,14 +18,24 @@ body {
 
 header{
   background-color: var(--c1);
-  height: 250px;
-  position: absolute;
+  color: var(--c3);
+  width: 100%;
+  margin-bottom: 5%;
+  min-height: 100px;
+  align-content: center;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 footer{
   background-color: var(--c1);
+  min-height: 100px;
   margin-top: 5%;
-  
+  color: var(--c3);
+  align-self: end;
+  align-content: center;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .nn_space {
@@ -37,5 +46,19 @@ footer{
 
 
 .container {
-  height: 1200px;
+  padding: 5%;
+  align-items: center;
+  justify-items: center;
+}
+
+.home-card{
+  background-color: none;
+  padding: 2%;
+  border: 3px solid var(--c3);
+  border-radius: 5%;
+  box-shadow: -10px 5px var(--c3);
+}
+
+a, li {
+  text-decoration: none;
 }

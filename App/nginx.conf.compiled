@@ -16,7 +16,7 @@ http {
   }
 
   server {
-    listen 8080;
+    listen 3000;
     lua_code_cache off;
 
     location / {

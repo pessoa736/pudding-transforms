@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+
+  lapis:
+    build: ./docker/openresty
+    volumes:
+      - ../App:/App
+    ports:
+      - "3000:3000"  # Mapeia a porta 3000 do container para a porta 3000 do host
+    command: ["lapis", "server"]

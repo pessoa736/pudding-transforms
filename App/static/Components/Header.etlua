@@ -1,3 +1,12 @@
-<header>
-    <h1>test</h1>
-</header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><%- helpers.get_style() %></head>
+
+<body>
+        
+    <header>
+        <h1>Pudding-transforms Hub</h1>
+    </header>
+</body>
+</html>
