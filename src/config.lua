@@ -1,4 +1,4 @@
-DEBUGMODE=true
+DEBUGMODE=false
 
 -- testes
 MATRIXTEST=false

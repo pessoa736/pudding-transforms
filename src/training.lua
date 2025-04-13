@@ -14,4 +14,4 @@ end
 
 
 
-train(criar_rede_neural({2, 4, 4, 3}), 0.01, 1000)
+--train(criar_rede_neural({2, 4, 4, 3}), 0.01, 1000)

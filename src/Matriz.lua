@@ -2,7 +2,6 @@
 Matrix = {}
 Matrix.__index = Matrix
 
--- Função para criar uma nova matriz
 function Matrix.new(nrows, ncols, initial)
     local m = {
         nrows = nrows,
@@ -32,8 +31,6 @@ function Matrix.set(m, i, j, v)
   return m
 end
 
-
--- Função para exibir a matriz de forma amigável (sobrecarga do operador tostring)
 function Matrix.__tostring(m)
     local s = ""
     for i = 1, m.nrows do
@@ -57,7 +54,6 @@ function Matrix.modify(m, v)
   return m
 end
 
--- Operador de adição: soma elemento a elemento (necessita de dimensões iguais)
 function Matrix.__add(a, b)
     if a.nrows ~= b.nrows or a.ncols ~= b.ncols then
         error("As matrizes devem ter as mesmas dimensões para adição.")
@@ -71,7 +67,6 @@ function Matrix.__add(a, b)
     return result
 end
 
--- Operador de subtração: subtrai elemento a elemento (necessita de dimensões iguais)
 function Matrix.__sub(a, b)
     if a.nrows ~= b.nrows or a.ncols ~= b.ncols then
         error("As matrizes devem ter as mesmas dimensões para subtração.")
@@ -85,7 +80,6 @@ function Matrix.__sub(a, b)
     return result
 end
 
--- Operador de multiplicação: trata tanto a multiplicação escalar quanto a multiplicação de matrizes
 function Matrix.__mul(a, b)
     if type(a) == "number" then
         -- Multiplicação escalar: número * matriz
@@ -106,7 +100,6 @@ function Matrix.__mul(a, b)
         end
         return result
     else
-        -- Multiplicação de matrizes: o número de colunas de a deve ser igual ao número de linhas de b
         if a.ncols ~= b.nrows then
             error("Dimensões incompatíveis para multiplicação de matrizes. 1")
         end
@@ -128,7 +121,6 @@ end
 
 function Matrix.__idiv(a, b)
     if type(a) == "number" then
-        -- Divisão escalar: número // matriz
         local result = Matrix.new(b.nrows, b.ncols)
         for i = 1, b.nrows do
             for j = 1, b.ncols do
@@ -137,7 +129,6 @@ function Matrix.__idiv(a, b)
         end
         return result
     elseif type(b) == "number" then
-        -- Divisão escalar: matriz // número
         local result = Matrix.new(a.nrows, a.ncols)
         for i = 1, a.nrows do
             for j = 1, a.ncols do
@@ -150,7 +141,6 @@ function Matrix.__idiv(a, b)
 end
 
 
--- Operador unário para negação (-matriz)
 function Matrix.__unm(m)
     local result = Matrix.new(m.nrows, m.ncols)
     for i = 1, m.nrows do
@@ -161,7 +151,6 @@ function Matrix.__unm(m)
     return result
 end
 
--- Operador de igualdade: verifica se duas matrizes são iguais elemento a elemento
 function Matrix.__eq(a, b)
     if a.nrows ~= b.nrows or a.ncols ~= b.ncols then
         return false
@@ -176,7 +165,6 @@ function Matrix.__eq(a, b)
     return true
 end
 
--- Função para transpor uma matriz
 function Matrix.transpose(self)
     local result = Matrix.new(self.ncols, self.nrows)
     for i = 1, self.nrows do
@@ -188,7 +176,6 @@ function Matrix.transpose(self)
 end
 
 if DEBUGMODE and MATRIXTEST then
---   -- Exemplo de uso
   local A = Matrix.new(2, 3)
   A.data = {
       {1, 2, 3},
@@ -201,10 +188,10 @@ if DEBUGMODE and MATRIXTEST then
       {3, 2, 1}
   }
 
-  local C = A + B         -- Soma de matrizes
-  local D = A - B         -- Subtração de matrizes
-  local E = 2 * A         -- Multiplicação escalar
-  local T = Matrix.transpose(A)  -- Transposta da matriz A
+  local C = A + B         
+  local D = A - B         
+  local E = 2 * A         
+  local T = Matrix.transpose(A)  
   
   print("Matriz A:")
   print(A)
@@ -224,7 +211,6 @@ if DEBUGMODE and MATRIXTEST then
   print("Transposta de A:")
   print(T)
   
-  -- Para multiplicação de matrizes, as dimensões devem ser compatíveis.
   local F = Matrix.new(3, 2)
   F.data = {
       {1, 2},
@@ -232,7 +218,7 @@ if DEBUGMODE and MATRIXTEST then
       {5, 6}
   }
   
-  local G = A * F  -- Multiplicação de A (2x3) por F (3x2) resulta em uma matriz 2x2
+  local G = A * F  
   print("A * F:")
   print(G)
 end

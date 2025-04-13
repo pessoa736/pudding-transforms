@@ -1,4 +1,4 @@
-FROM nickblah/lua:5.4.7-luarocks-ubuntu
+FROM nickblah/lua:5.4-luarocks-ubuntu
 
 
 WORKDIR /app
@@ -7,10 +7,10 @@ COPY . .
 
 
 RUN apt-get update 
-RUN apt-get install -y gcc build-essential 
-RUN luarocks install luasocket
+RUN apt-get install -y gcc build-essential make cpp 
 
-RUN cp example.env.lua env.lua
+
+RUN cp config.lua config.default.lua
 
 
 

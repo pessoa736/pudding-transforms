@@ -21,12 +21,11 @@ end
 local function serialize(t, tab_level)
     local tab_level = tab_level or -1
 
-
     local tostr ="{" 
-    
+
     for k, v in pairs(t) do
         if type(k) == "string" then 
-            tostr = tostr .. "\n".. tab_series(tab_level+1) .. "['" .. k .. "']="
+            tostr = tostr .. "\n".. tab_series(tab_level+1) .. k .. " = "
         elseif type(k) == "number" then
             tostr = tostr .. "\n".. tab_series(tab_level+1) .. "[" .. k .. "]="
         end
@@ -40,8 +39,14 @@ local function serialize(t, tab_level)
         end
         tostr = tostr .. ","
     end
-    tostr = tostr .. "\n" .. tab_series(tab_level+1) .. "}"
+
+    tostr = tostr .. "\n" .. tab_series(tab_level) .. "}"
+    
     return tostr
+end
+
+local cust_error = function(error, valuer)
+    return (1/2)*(error + valuer)*(error - valuer) 
 end
 
 -- funcao para criar a rede neural / function to create the neural network
@@ -88,19 +93,42 @@ function criar_rede_neural(layers)
                         return s.layers[l]
                     end
                 end,
-                backpropagation = function(s, learning_rate)
-                    for l = #s.weight, 2, -1 do
-                        s.weight[l] = s.weight[l]:modify(
-                            function(i, j, m)
-                                local item = m:get(i, j)
-                                local delta = derivate(sigm, item)
-                                local result = item - delta * learning_rate
-                                if DEBUGMODE then print("item: "..item, "delta: "..delta, "result: "..result) end
-                                
-                                return result
-                            end
-                        )
+                backpropagation = function(s, target, learning_rate)
+                    local L = #s.sizelayers  
+                    local delta = {}         
                 
+                    delta[L] = s.layers[L]:modify(function(i, j, m)
+                        local d_sigmoid = m:get(i, j) * (1 - m:get(i, j))
+                        local erro = m:get(i, j) - target:get(i, j)
+                        return erro * d_sigmoid
+                    end)
+
+                    for l = L - 1, 2, -1 do
+                        local next_delta = delta[l + 1]
+                        local weight = s.weight[l]
+                        local weightT = weight:transpose()
+                        local erro = weightT * next_delta 
+
+                        
+                        delta[l]  = s.layers[l]:transpose():modify(function(i, j, m)
+                            local d_sigmoid = m:get(i, j) * (1 - m:get(i, j))
+                            return  erro:get(i,j) * d_sigmoid
+                        end)
+                        print("M_dS: "..tostring(M_dS))
+                        print("erro: "..tostring(erro))
+                        print("delta: "..tostring(delta[l]))
+                    end
+                
+                    for l = 1, L - 1 do
+                        local ativacao_prev = s.layers[l]
+                        local delta_next = delta[l + 1]
+                        print("ativacao_prev: "..tostring(ativacao_prev))
+                        local grad = delta_next * ativacao_prev
+                        print("grab: ".. tostring(grad))
+                        local nivel_de_aprendizagem = ( learning_rate * grad)
+                        print("nivel de aprendizagem: "..tostring(nivel_de_aprendizagem))
+                        print(s.weight[l])
+                        s.weight[l] = s.weight[l] -  nivel_de_aprendizagem
                     end
                 end,
                 inputsset = function(s, inputs)
@@ -121,7 +149,7 @@ function criar_rede_neural(layers)
                 
                 end,
                 save = function(s, name)
-                    local model = serialize(s)
+                    local model = "return "..serialize(s)
                     local name = name or "test"
 
                     local file = assert(io.open("models/"..name..".lua", "w"))
@@ -159,13 +187,14 @@ end
 if  NEURALNETWORKTEST then
     local i=0
     print "\n\n---- testing neural network ----"
-    local nn = criar_rede_neural({2, 4, 4, 3,5,5})
-    nn:inputsset({{2,3}})
+    local nn = criar_rede_neural({2,2,1})
+    nn:inputsset({{2, 3}})
     
-    while i<100 do
+    while i<1000 do
         nn:think()
-        nn:backpropagation(0.0001)
+        nn:backpropagation(Matrix.new(1, nn.sizelayers[#nn.sizelayers], 0),0.001)
         i=i+1
+        print(i)
     end
     nn:save()
 end

@@ -1,13 +1,19 @@
 
+require "config"
+
+print("\nsettings:")
+print("\tdebug mode: " .. (DEBUGMODE and "true" or "false"))
+print("\ttokenizer test: " .. (TOKENIZERTEST and "true" or "false"))
+print("\tmatrix test: " .. (MATRIXTEST and "true" or "false"))
+print("\tneural network test: " .. (NEURALNETWORKTEST and "true" or "false"))
+print("\n\n")
 
 -- pacotes a serem carregados / packages to be loaded
 pacotes= {
-  "env",
   "Tokenizer",
   "Matriz",
   "neural_network",
-  "training",
-  "lapis"
+  "training"
 }
 
 -- carregamento dos pacotes / loading packages
@@ -23,13 +29,6 @@ for _, pacote in ipairs(pacotes) do
     if DEBUGMODE then print(pacote.." is loaded") end
   end
 end
-
-print("\nsettings:")
-print("\tdebug mode: " .. (DEBUGMODE and "true" or "false"))
-print("\ttokenizer test: " .. (TOKENIZERTEST and "true" or "false"))
-print("\tmatrix test: " .. (MATRIXTEST and "true" or "false"))
-print("\tneural network test: " .. (NEURALNETWORKTEST and "true" or "false"))
-print("\n\n")
 
 
 
