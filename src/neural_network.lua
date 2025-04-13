@@ -1,0 +1,172 @@
+
+
+
+-- funcao de ativacao / activation function
+local function sigm(n)
+    return 1/(1+1/math.exp(n))
+end
+
+local function derivate(f, n)
+    return (f(n+0.001)-f(n))/0.001
+end
+
+function tab_series(numTabs)
+    local str=""
+    for i=0, numTabs do
+        str=str.."\t"
+    end
+    return str
+end
+
+local function serialize(t, tab_level)
+    local tab_level = tab_level or -1
+
+
+    local tostr ="{" 
+    
+    for k, v in pairs(t) do
+        if type(k) == "string" then 
+            tostr = tostr .. "\n".. tab_series(tab_level+1) .. "['" .. k .. "']="
+        elseif type(k) == "number" then
+            tostr = tostr .. "\n".. tab_series(tab_level+1) .. "[" .. k .. "]="
+        end
+        
+        if type(v) == "table" then
+            tostr = tostr .. serialize(v, tab_level + 1)
+        elseif type(v) == "string" then
+            tostr = tostr .. string.format("%q", v)
+        else
+            tostr = tostr .. tostring(v)
+        end
+        tostr = tostr .. ","
+    end
+    tostr = tostr .. "\n" .. tab_series(tab_level+1) .. "}"
+    return tostr
+end
+
+-- funcao para criar a rede neural / function to create the neural network
+function criar_rede_neural(layers) 
+    local nn = {
+        sizelayers=layers,
+        layers={},
+        weight={}
+    }
+
+    for l = 1, #layers do
+        local l2 = (l-1<=0 and 1 or l-1)
+        nn.layers[l]= Matrix.new(1, layers[l], 0)
+        nn.weight[l2]= Matrix.new(layers[l], layers[l2], 
+            function() return math.random(-100, 100)/100 end
+        )
+    end
+     
+    return setmetatable(nn, 
+        {
+            __index = {
+                think = function(s)
+                    for l = 2, #s.sizelayers do
+                        local l2 = (l-1<=0 and 1 or l-1)
+                        local lt = s.weight[l2]:transpose()
+                        local bias = Matrix.new(s.layers[l].nrows, s.layers[l2].ncols, function() return math.random(0,20)/100 end)
+            
+                        s.layers[l] = (s.layers[l-1]+bias) * lt
+            
+                        s.layers[l] = s.layers[l]:modify(
+                            function(i, j, m) 
+                                local item = m:get(i, j)
+                                local result = sigm(item)
+
+                                if DEBUGMODE then print("valor recebido: "..item, "valor ativado: "..result) end
+                                
+                                return result
+                            end
+                        )
+                    end
+                    
+                    if DEBUGMODE then print("\nvisualizando as camadas e pesos: \n"..tostring(s)) end
+                    if #s.sizelayers == l then
+                        return s.layers[l]
+                    end
+                end,
+                backpropagation = function(s, learning_rate)
+                    for l = #s.weight, 2, -1 do
+                        s.weight[l] = s.weight[l]:modify(
+                            function(i, j, m)
+                                local item = m:get(i, j)
+                                local delta = derivate(sigm, item)
+                                local result = item - delta * learning_rate
+                                if DEBUGMODE then print("item: "..item, "delta: "..delta, "result: "..result) end
+                                
+                                return result
+                            end
+                        )
+                
+                    end
+                end,
+                inputsset = function(s, inputs)
+                    if DEBUGMODE then print("") end
+                    if DEBUGMODE then print("inputs setados") end
+
+                    s.layers[1]=s.layers[1]:modify(
+                        function(i, j, m)
+                            local result = inputs[i][j]
+                            
+                            if DEBUGMODE  then print("input: "..j.." = "..result) end
+                            
+                            return result
+                        end
+                    )
+
+                    if DEBUGMODE then print("") end
+                
+                end,
+                save = function(s, name)
+                    local model = serialize(s)
+                    local name = name or "test"
+
+                    local file = assert(io.open("models/"..name..".lua", "w"))
+                    if file then
+                        file:write(model)
+                        file:close()
+                    else
+                        print("Erro ao abrir o arquivo para escrita.")
+                    end
+                end
+            },
+            __tostring = function(s)
+                local str = "neural_network: { "
+                
+                for k, v in ipairs(s.layers) do
+                    str = str .. "\n\tlayer " .. k ..":\n".. tostring(v) 
+                end
+                
+                for k, v in ipairs(s.weight) do
+                    str = str .. "\n\tweight " .. k ..":\n".. tostring(v) 
+                end
+                
+                str = str .. "\n}"
+                
+                return str
+            end
+        }
+    )
+end
+
+
+
+
+  
+if  NEURALNETWORKTEST then
+    local i=0
+    print "\n\n---- testing neural network ----"
+    local nn = criar_rede_neural({2, 4, 4, 3,5,5})
+    nn:inputsset({{2,3}})
+    
+    while i<100 do
+        nn:think()
+        nn:backpropagation(0.0001)
+        i=i+1
+    end
+    nn:save()
+end
+  

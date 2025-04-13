@@ -7,12 +7,8 @@
   </head>
   <body>
     <% render("static/Components/Header") %>
+
     
-    <main class="container">
-      <div class="nn_space">
-        <% for i = 0, 2 %>
-      </div>
-    </main>
     
     <% render("static/Components/Footer") %>
   </body>

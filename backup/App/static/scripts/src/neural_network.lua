@@ -13,9 +13,10 @@ end
 -- funcao para criar a rede neural / function to create the neural network
 function criar_rede_neural(layers) 
     local nn = {
-       sizelayers=layers,
-       layers={},
-       weight={}
+        name = name or "test";
+        sizelayers=layers,
+        layers={},
+        weight={}
     }
 
     for l = 1, #layers do
@@ -85,8 +86,35 @@ function criar_rede_neural(layers)
 
                     if DEBUGMODE then print("") end
                 
-                end
+                end,
+                save = function(s, name)
+                    local tostr = "{"
+                    for k, v in pairs(s) do
+                        if type(k) == "string" then 
+                            tostr = tostr .. "['" .. k .. "']="
+                        else
+                            tostr = tostr .. "[" .. k .. "]="
+                        end
+                        
+                        if type(v) == "table" then
+                            tostr = tostr .. serialize(v)
+                        elseif type(v) == "string" then
+                            tostr = tostr .. string.format("%q", v)
+                        else
+                            tostr = tostr .. tostring(v)
+                        end
+                        tostr = tostr .. ","
+                    end
+                    tostr = tostr .. "}"
 
+                    local file = io.open(name, "w")
+                    if file then
+                        file:write(tostr)
+                        file:close()
+                    else
+                        print("Erro ao abrir o arquivo para escrita.")
+                    end
+                end
             },
             __tostring = function(s)
                 local str = "neural_network: { "
@@ -122,5 +150,6 @@ if  NEURALNETWORKTEST then
         nn:backpropagation(0.0001)
         i=i+1
     end
+    nn:save()
 end
   
