@@ -1,4 +1,3 @@
-
 require "config"
 
 print("\nsettings:")
@@ -6,6 +5,7 @@ print("\tdebug mode: " .. (DEBUGMODE and "true" or "false"))
 print("\ttokenizer test: " .. (TOKENIZERTEST and "true" or "false"))
 print("\tmatrix test: " .. (MATRIXTEST and "true" or "false"))
 print("\tneural network test: " .. (NEURALNETWORKTEST and "true" or "false"))
+print("\tTraining test: " .. (TRAINIGTEST and "true" or "false"))
 print("\n\n")
 
 -- pacotes a serem carregados / packages to be loaded

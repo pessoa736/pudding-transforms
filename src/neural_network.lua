@@ -10,15 +10,16 @@ local function derivate(f, n)
     return (f(n+0.001)-f(n))/0.001
 end
 
-function tab_series(numTabs)
-    local str=""
-    for i=0, numTabs do
-        str=str.."\t"
-    end
-    return str
-end
 
 local function serialize(t, tab_level)
+    local function tab_series(numTabs)
+        local str=""
+        for i=0, numTabs do
+            str=str.."\t"
+        end
+        return str
+    end
+
     local tab_level = tab_level or -1
 
     local tostr ="{" 
@@ -43,10 +44,6 @@ local function serialize(t, tab_level)
     tostr = tostr .. "\n" .. tab_series(tab_level) .. "}"
     
     return tostr
-end
-
-local cust_error = function(error, valuer)
-    return (1/2)*(error + valuer)*(error - valuer) 
 end
 
 -- funcao para criar a rede neural / function to create the neural network
@@ -93,7 +90,10 @@ function criar_rede_neural(layers)
                         return s.layers[l]
                     end
                 end,
-                backpropagation = function(s, target, learning_rate)
+                backpropagation = function(s, args)
+                    local args = args or {}
+                    local target = args.target or Matrix.new(1, s.sizelayers[#s.sizelayers], 0)
+                    local learning_rate = args.learning_rate or 0.01
                     local L = #s.sizelayers  
                     local delta = {}         
                 
@@ -104,30 +104,35 @@ function criar_rede_neural(layers)
                     end)
 
                     for l = L - 1, 2, -1 do
+                        
                         local next_delta = delta[l + 1]
-                        local weight = s.weight[l]
-                        local weightT = weight:transpose()
-                        local erro = weightT * next_delta 
+                        if DEBUGMODE then print("next_delta: "..tostring(next_delta)) end	
+
+                        local erro = next_delta * s.weight[l] 
+                        if DEBUGMODE then print("erro: "..tostring(erro)) end
 
                         
-                        delta[l]  = s.layers[l]:transpose():modify(function(i, j, m)
+                        delta[l]  = s.layers[l]:modify(function(i, j, m)
                             local d_sigmoid = m:get(i, j) * (1 - m:get(i, j))
                             return  erro:get(i,j) * d_sigmoid
                         end)
-                        print("M_dS: "..tostring(M_dS))
-                        print("erro: "..tostring(erro))
-                        print("delta: "..tostring(delta[l]))
+
+                        if DEBUGMODE then print("delta: "..tostring(delta[l])) end
                     end
                 
                     for l = 1, L - 1 do
                         local ativacao_prev = s.layers[l]
                         local delta_next = delta[l + 1]
-                        print("ativacao_prev: "..tostring(ativacao_prev))
-                        local grad = delta_next * ativacao_prev
-                        print("grab: ".. tostring(grad))
+                        
+                        if DEBUGMODE then print("ativacao_prev: "..tostring(ativacao_prev)) end
+                        local grad = delta_next:transpose() * ativacao_prev
+                        
+                        if DEBUGMODE then print("grab: ".. tostring(grad)) end
                         local nivel_de_aprendizagem = ( learning_rate * grad)
-                        print("nivel de aprendizagem: "..tostring(nivel_de_aprendizagem))
-                        print(s.weight[l])
+                        
+                        if DEBUGMODE then print("nivel de aprendizagem: "..tostring(nivel_de_aprendizagem)) end
+                        if DEBUGMODE then print(s.weight[l]) end
+                        
                         s.weight[l] = s.weight[l] -  nivel_de_aprendizagem
                     end
                 end,
@@ -192,7 +197,7 @@ if  NEURALNETWORKTEST then
     
     while i<1000 do
         nn:think()
-        nn:backpropagation(Matrix.new(1, nn.sizelayers[#nn.sizelayers], 0),0.001)
+        nn:backpropagation()
         i=i+1
         print(i)
     end
